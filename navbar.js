@@ -16,13 +16,13 @@ class NavbarComponent extends HTMLElement {
             </style>
 
             <nav>
-                <a href="#">Home</a>
-                <a href="#">Afspeellijst</a>
-                <a href="#">BPM-gegevens</a>
-                <a href="#">Contact</a>
+                <a href="index.html">Home</a>
+                <a href="afspeellijst.html">Afspeellijst</a>
+                <a href="BPM.html">BPM-gegevens</a>
+                <a href="contact.html">Contact</a>
             </nav>
         `;
     }
 }
 
-customElements.define('navbar-component', NavbarComponent);
+customElements.define('nav-comp', NavbarComponent);

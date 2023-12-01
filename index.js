@@ -1,14 +1,13 @@
-//#region IMPORTS
-import "./navbar.js"
-//#endregion IMPORTS
+import "./navbar"
+import "./hartslag"
 
 const template = document.createElement("template")
 template.innerHTML = /*html*/`
 
-    <nav-comp></nav-comp>
+    <eye-comp></eye-comp>
 `
 
-class app extends HTMLElement
+class  extends HTMLElement
 {
     constructor(){
         super()
@@ -18,4 +17,4 @@ class app extends HTMLElement
         }
 }
 
-customElements.define('app-comp', app)
+customElements.define('index-comp', app)

@@ -1,13 +1,14 @@
-import "./navbar"
-import "./hartslag"
+import "./navbar.js"
+import "./hartslag.js"
 
 const template = document.createElement("template")
 template.innerHTML = /*html*/`
 
-    <eye-comp></eye-comp>
+    <nav-comp></nav-comp>
+    <muziek-comp></muziek-comp>
 `
 
-class  extends HTMLElement
+class app extends HTMLElement
 {
     constructor(){
         super()
@@ -17,4 +18,4 @@ class  extends HTMLElement
         }
 }
 
-customElements.define('index-comp', app)
+customElements.define('app-comp', app)

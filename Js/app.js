@@ -10,7 +10,12 @@ template.innerHTML = /*html*/`
     <nav-comp></nav-comp>
     <my-counter></my-counter>
     <chart-element></chart-element>
-    <custom-afspeellijst><custom-afspeellijst>
+    <custom-afspeellijst
+     nameCurrentSong = "Song 1"
+     ArtistCurrentSong = "Artitst 1"
+     durationCurrentSong = "duration 1"
+     bpmCurrentSong = "BPM 1"
+     ><custom-afspeellijst>
 `
 
 class app extends HTMLElement {

@@ -23,8 +23,8 @@ template.innerHTML = /*html*/`
         <th>Aan het afspelen</th>
     </tr>
     <tr class="currentNumber">
-        <td>Nummer 1</td>
-        <td>Artiest 1</td>
+        <td id="nameCurrentSong"></td>
+        <td></td>
         <td>Duur 1</td>
         <td>BPM 1</td>
         <td id="currentlyPlaying"></td>
@@ -65,6 +65,7 @@ class CustomAfspeellijst extends HTMLElement {
         super();
         this.attachShadow({"mode": "open"});
         this.shadowRoot.appendChild(template.content.cloneNode(true));
+        this.shadowRoot.querySelector('#nameCurrentSong').innerText = this.getAttribute("nameCurrentSong");
     }
 }
 

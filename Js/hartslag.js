@@ -24,12 +24,12 @@
 //             margin: 20px; /* Margin around the chart */
 //             background-color: #fff; /* White background */
 //           }
-  
+
 //           canvas {
 //             width: 100%;
 //             height: 100%;
 //           }
-  
+
 //           .scale-left {
 //             position: absolute;
 //             width: 15px; /* Width of the scale */
@@ -38,13 +38,13 @@
 //             left: 0; /* Position at the left */
 //             top: 0;
 //           }
-  
+
 //           .scale-line {
 //             width: 100%;
 //             height: 1px;
 //             background-color: #ddd;
 //           }
-  
+
 //           .scale-label {
 //             font-size: 10px;
 //             color: #555;
@@ -52,7 +52,7 @@
 //             left: 50%;
 //             transform: translateX(-50%);
 //           }
-  
+
 //           .border-text {
 //             position: absolute;
 //             top: 50%;
@@ -193,7 +193,7 @@ class ChartElement extends HTMLElement {
 
         .border-text {
           position: absolute;
-          top: 50%;
+          top: 5%;
           left: 50%;
           transform: translate(-50%, -50%);
           font-size: 14px;
@@ -214,7 +214,7 @@ class ChartElement extends HTMLElement {
         <div class="scale-label" style="top: 75%;">30</div>
         <div class="scale-label" style="top: 100%;">0</div>
       </div>
-      <div class="border-text">Chart Title</div>
+      <div class="border-text">Hart Slag</div>
     `;
   }
 
@@ -228,13 +228,13 @@ class ChartElement extends HTMLElement {
       const y =
         this.chartCanvas.height -
         ((this.chartData[i] - 40) / (120 - 40)) * this.chartCanvas.height;
-        console.log(x);
-        console.log(y);
+      //console.log(x);
+      //console.log(y);
       this.ctx.lineTo(x, y);
     }
 
     this.ctx.strokeStyle = '#4CAF50'; /* Green line */
-    this.ctx.lineWidth = 1;
+    this.ctx.lineWidth = 2;
     this.ctx.stroke();
   }
 

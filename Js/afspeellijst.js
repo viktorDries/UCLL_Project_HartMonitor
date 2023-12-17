@@ -1,5 +1,5 @@
 const template = document.createElement("template");
-template.innerHTML = `
+template.innerHTML = /*html*/`
 <style>
 </style>
 <table>
@@ -51,4 +51,4 @@ class customAfspeellijst extends HTMLElement{
     }
 }
 
-customElements.define('customAfspeellijst', customAfspeellijst);
+customElements.define('afspeellijst', customAfspeellijst);

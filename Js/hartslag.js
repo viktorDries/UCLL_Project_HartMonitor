@@ -228,11 +228,13 @@ class ChartElement extends HTMLElement {
       const y =
         this.chartCanvas.height -
         ((this.chartData[i] - 40) / (120 - 40)) * this.chartCanvas.height;
+        console.log(x);
+        console.log(y);
       this.ctx.lineTo(x, y);
     }
 
     this.ctx.strokeStyle = '#4CAF50'; /* Green line */
-    this.ctx.lineWidth = 2;
+    this.ctx.lineWidth = 1;
     this.ctx.stroke();
   }
 

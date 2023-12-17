@@ -1,72 +1,62 @@
-const template = document.createElement("template");
-template.innerHTML = /*html*/`
-<style>
-    table, th, td{
-        border: 1px solid black;
-    }
-    #currentlyPlaying{
-        background-color: green;
-    }
-    .currentlyNotPlaying{
-        background-color: red;
-    }
-    .nextNumber{
-        opacity: 60%
-    }
-</style>
-<table>
-    <tr>
-        <th>Nummer</th>
-        <th>Artiest</th>
-        <th>Duur</th>
-        <th>BPM</th>
-        <th>Aan het afspelen</th>
-    </tr>
-    <tr class="currentNumber">
-        <td id="nameCurrentSong"></td>
-        <td></td>
-        <td>Duur 1</td>
-        <td>BPM 1</td>
-        <td id="currentlyPlaying"></td>
-    </tr>
-    <tr class="nextNumber">
-        <td>Nummer 2</td>
-        <td>Artiest 2</td>
-        <td>Duur 2</td>
-        <td>BPM 2</td>
-        <td class="currentlyNotPlaying"></td>
-    </tr>
-    <tr class="nextNumber">
-        <td>Nummer 3</td>
-        <td>Artiest 3</td>
-        <td>Duur 3</td>
-        <td>BPM 3</td>
-        <td class="currentlyNotPlaying"></td>
-    </tr>
-    <tr class="nextNumber">
-        <td>Nummer 4</td>
-        <td>Artiest 4</td>
-        <td>Duur 4</td>
-        <td>BPM 4</td>
-        <td class="currentlyNotPlaying"></td>
-    </tr>
-    <tr class="nextNumber">
-        <td>Nummer 5</td>
-        <td>Artiest 5</td>
-        <td>Duur 5</td>
-        <td>BPM 5</td>
-        <td class="currentlyNotPlaying"></td>
-    </tr>
-</table>
-`;
-
-class CustomAfspeellijst extends HTMLElement {
+class PlaylistComponent extends HTMLElement {
     constructor() {
-        super();
-        this.attachShadow({"mode": "open"});
-        this.shadowRoot.appendChild(template.content.cloneNode(true));
-        this.shadowRoot.querySelector('#nameCurrentSong').innerText = this.getAttribute("nameCurrentSong");
-    }
-}
+      super();
+      this.attachShadow({mode: 'open'});
 
-customElements.define('custom-afspeellijst', CustomAfspeellijst);
+      this.currentSongIndex = 0;
+
+      const songs = JSON.parse(this.getAttribute('songs'));
+      this.songs = songs;
+
+      const songList = document.createElement('ul');
+      this.songListElement = songList;
+
+      this.updatePlaylist();
+
+      this.shadowRoot.appendChild(songList);
+    }
+
+    updatePlaylist() {
+      this.songListElement.innerHTML = '';
+
+      this.songs.forEach((song, index) => {
+        const { title, artist, duration, playing } = song;
+
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+          <strong>${title}</strong> by ${artist} (${duration}) ${playing ? '(Playing)' : ''}
+        `;
+
+        this.songListElement.appendChild(listItem);
+
+        // If this is the current song, highlight it
+        if (index === this.currentSongIndex) {
+          listItem.style.backgroundColor = '#e0e0e0';
+        }
+      });
+    }
+
+    onSongFinished() {
+      // Toggle the 'playing' attribute for the current song
+      this.songs[this.currentSongIndex].playing = false;
+
+      // Move to the next song in the playlist
+      this.currentSongIndex = (this.currentSongIndex + 1) % this.songs.length;
+
+      // Toggle the 'playing' attribute for the next song
+      this.songs[this.currentSongIndex].playing = true;
+
+      // Update the playlist display
+      this.updatePlaylist();
+    }
+
+    connectedCallback() {
+      // Set the 'playing' attribute for the first song to true
+      this.songs[this.currentSongIndex].playing = true;
+
+      // Simulate starting playback of the first song
+      this.onSongFinished();
+    }
+  }
+
+  customElements.define('playlist-component', PlaylistComponent);

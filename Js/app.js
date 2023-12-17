@@ -10,12 +10,13 @@ template.innerHTML = /*html*/`
     <nav-comp></nav-comp>
     <my-counter></my-counter>
     <chart-element></chart-element>
-    <custom-afspeellijst
-     nameCurrentSong = "Song 1"
-     ArtistCurrentSong = "Artitst 1"
-     durationCurrentSong = "duration 1"
-     bpmCurrentSong = "BPM 1"
-     ><custom-afspeellijst>
+    <playlist-component songs='[
+        {"title": "Song 1", "artist": "Artist 1", "duration": "3:45", "playing": false},
+        {"title": "Song 2", "artist": "Artist 2", "duration": "4:20", "playing": false},
+        {"title": "Song 3", "artist": "Artist 3", "duration": "2:55", "playing": false},
+        {"title": "Song 4", "artist": "Artist 4", "duration": "5:10", "playing": false},
+        {"title": "Song 5", "artist": "Artist 5", "duration": "3:30", "playing": false}
+      ]'></playlist-component>
 `
 
 class app extends HTMLElement {

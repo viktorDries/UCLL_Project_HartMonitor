@@ -1,7 +1,41 @@
 class PlaylistComponent extends HTMLElement {
     constructor() {
       super();
-      this.attachShadow({mode: 'open'});
+      this.attachShadow({ mode: 'open' });
+
+      // Create a template element for the component's styles
+      const template = document.createElement('template');
+      template.innerHTML = `
+        <style>
+          :host {
+            display: block;
+            max-width: 400px;
+            margin: 20px auto;
+            font-family: 'Arial', sans-serif;
+          }
+
+          ul {
+            list-style: none;
+            padding: 0;
+          }
+
+          li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            transition: background-color 0.3s;
+          }
+
+          li:hover {
+            background-color: #f0f0f0;
+          }
+
+          .playing {
+            background-color: #e0e0e0;
+          }
+        </style>
+      `;
+
+      this.shadowRoot.appendChild(template.content.cloneNode(true));
 
       this.currentSongIndex = 0;
       this.songs = JSON.parse(this.getAttribute('songs'));
@@ -21,19 +55,16 @@ class PlaylistComponent extends HTMLElement {
       this.songListElement.innerHTML = '';
 
       this.songs.forEach((song, index) => {
-        const { title, artist, duration, playing } = song;
+        const { title, artist, duration, bpm, playing } = song;
 
         const listItem = document.createElement('li');
         listItem.innerHTML = `
-          <strong>${title}</strong> by ${artist} (${duration}) ${playing ? '(Playing)' : ''}
+          <strong>${title}</strong> by ${artist} (${duration}) - ${bpm} BPM ${playing ? '(Playing)' : ''}
         `;
 
-        this.songListElement.appendChild(listItem);
+        listItem.classList.toggle('playing', index === this.currentSongIndex);
 
-        // If this is the current song, highlight it
-        if (index === this.currentSongIndex) {
-          listItem.style.backgroundColor = '#e0e0e0';
-        }
+        this.songListElement.appendChild(listItem);
       });
     }
 
@@ -55,15 +86,14 @@ class PlaylistComponent extends HTMLElement {
       this.timerId = setTimeout(() => this.onSongFinished(), nextSongDuration * 1000);
     }
 
-    // Helper function to parse duration in the format "mm:ss"
     parseDuration(duration) {
       const [minutes, seconds] = duration.split(':').map(Number);
       return minutes * 60 + seconds;
     }
 
     connectedCallback() {
-      // Set the 'playing' attribute for the first song to true
-      this.songs[this.currentSongIndex].playing = true;
+      // Set the 'playing' attribute for the first song (index 0) to true
+      this.songs[0].playing = true;
 
       // Simulate starting playback of the first song
       this.onSongFinished();

@@ -153,8 +153,8 @@ class ChartElement extends HTMLElement {
       <style>
         :host {
           display: block;
-          width: 200px;
-          height: 200px;
+          width: 300px;
+          height: 300px;
           position: relative;
           overflow: hidden;
           border: 1px solid #ddd; /* Light gray border */
@@ -201,7 +201,7 @@ class ChartElement extends HTMLElement {
           color: #333; /* Dark gray text */
         }
       </style>
-      <canvas id="chartCanvas" width="100" height="100"></canvas>
+      <canvas id="chartCanvas" width="300" height="300"></canvas>
       <div class="scale-left" id="scaleLeft">
         <div class="scale-line" style="top: 0;"></div>
         <div class="scale-line" style="top: 25%;"></div>

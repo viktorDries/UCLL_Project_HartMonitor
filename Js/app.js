@@ -1,6 +1,8 @@
 import "./navbar.js"
 import "./muziek.js"
 import "./hartslag.js"
+import "./afspeellijst.js"
+import "./bpm.js"
 
 const template = document.createElement("template")
 template.innerHTML = /*html*/`
@@ -8,7 +10,7 @@ template.innerHTML = /*html*/`
     <nav-comp></nav-comp>
     <my-counter></my-counter>
     <chart-element></chart-element>
-    <custom-afspeellijst><custom-afspeellijst>
+    <customAfspeellijst></customAfspeellijst>
 `
 
 class app extends HTMLElement {

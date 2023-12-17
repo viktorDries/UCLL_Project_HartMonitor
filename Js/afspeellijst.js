@@ -23,6 +23,7 @@ class PlaylistComponent extends HTMLElement {
             padding: 10px;
             border-bottom: 1px solid #ddd;
             transition: background-color 0.3s;
+            cursor: pointer;
           }
 
           li:hover {
@@ -64,6 +65,9 @@ class PlaylistComponent extends HTMLElement {
 
         listItem.classList.toggle('playing', index === this.currentSongIndex);
 
+        // Add a click event listener to jump to the clicked song
+        listItem.addEventListener('click', () => this.jumpToSong(index));
+
         this.songListElement.appendChild(listItem);
       });
     }
@@ -86,6 +90,27 @@ class PlaylistComponent extends HTMLElement {
       this.timerId = setTimeout(() => this.onSongFinished(), nextSongDuration * 1000);
     }
 
+    jumpToSong(index) {
+      // Stop the current timer
+      clearTimeout(this.timerId);
+
+      // Toggle the 'playing' attribute for the current song
+      this.songs[this.currentSongIndex].playing = false;
+
+      // Set the 'playing' attribute for the clicked song to true
+      this.songs[index].playing = true;
+
+      // Update the current song index
+      this.currentSongIndex = index;
+
+      // Update the playlist display
+      this.updatePlaylist();
+
+      // Set a timer for the duration of the clicked song
+      const clickedSongDuration = this.parseDuration(this.songs[index].duration);
+      this.timerId = setTimeout(() => this.onSongFinished(), clickedSongDuration * 1000);
+    }
+
     parseDuration(duration) {
       const [minutes, seconds] = duration.split(':').map(Number);
       return minutes * 60 + seconds;
@@ -96,7 +121,7 @@ class PlaylistComponent extends HTMLElement {
       this.songs[0].playing = true;
 
       // Simulate starting playback of the first song
-      this.onSongFinished();
+      //this.onSongFinished();
     }
   }
 

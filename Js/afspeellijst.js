@@ -46,17 +46,9 @@ class CustomAfspeellijst extends HTMLElement {
     constructor() {
         super();
 
-<<<<<<< HEAD
         this.attachShadow({"mode": "open"});
-=======
-        this.attachShadow({ "mode": "open" });
->>>>>>> f84c5387ee76d48fe0fcc100cef234e74b0fdc91
         this.shadowRoot.appendChild(template.content.cloneNode(true));
     }
 }
 
-<<<<<<< HEAD
 customElements.define('custom-afspeellijst', customAfspeellijst);
-=======
-customElements.define('afspeellijst', CustomAfspeellijst);
->>>>>>> f84c5387ee76d48fe0fcc100cef234e74b0fdc91

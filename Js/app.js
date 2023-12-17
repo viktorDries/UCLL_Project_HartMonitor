@@ -1,7 +1,6 @@
 import "./navbar.js"
 import "./muziek.js"
 import "./hartslag.js"
-import "./afspeellijst.js"
 
 const template = document.createElement("template")
 template.innerHTML = /*html*/`

@@ -4,9 +4,7 @@ class PlaylistComponent extends HTMLElement {
       this.attachShadow({mode: 'open'});
 
       this.currentSongIndex = 0;
-
-      const songs = JSON.parse(this.getAttribute('songs'));
-      this.songs = songs;
+      this.songs = JSON.parse(this.getAttribute('songs'));
 
       const songList = document.createElement('ul');
       this.songListElement = songList;
@@ -14,6 +12,9 @@ class PlaylistComponent extends HTMLElement {
       this.updatePlaylist();
 
       this.shadowRoot.appendChild(songList);
+
+      // Initialize the timer with a dummy function (will be updated on play)
+      this.timerId = setTimeout(() => {}, 0);
     }
 
     updatePlaylist() {
@@ -48,6 +49,16 @@ class PlaylistComponent extends HTMLElement {
 
       // Update the playlist display
       this.updatePlaylist();
+
+      // Set a timer for the duration of the next song
+      const nextSongDuration = this.parseDuration(this.songs[this.currentSongIndex].duration);
+      this.timerId = setTimeout(() => this.onSongFinished(), nextSongDuration * 1000);
+    }
+
+    // Helper function to parse duration in the format "mm:ss"
+    parseDuration(duration) {
+      const [minutes, seconds] = duration.split(':').map(Number);
+      return minutes * 60 + seconds;
     }
 
     connectedCallback() {

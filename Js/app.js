@@ -11,11 +11,11 @@ template.innerHTML = /*html*/`
     <my-counter></my-counter>
     <chart-element></chart-element>
     <playlist-component songs='[
-        {"title": "Song 1", "artist": "Artist 1", "duration": "3:45", "playing": false},
-        {"title": "Song 2", "artist": "Artist 2", "duration": "4:20", "playing": false},
-        {"title": "Song 3", "artist": "Artist 3", "duration": "2:55", "playing": false},
-        {"title": "Song 4", "artist": "Artist 4", "duration": "5:10", "playing": false},
-        {"title": "Song 5", "artist": "Artist 5", "duration": "3:30", "playing": false}
+        {"title": "Song 1", "artist": "Artist 1", "duration": "0:05", "playing": false},
+        {"title": "Song 2", "artist": "Artist 2", "duration": "0:07", "playing": false},
+        {"title": "Song 3", "artist": "Artist 3", "duration": "0:03", "playing": false},
+        {"title": "Song 4", "artist": "Artist 4", "duration": "0:10", "playing": false},
+        {"title": "Song 5", "artist": "Artist 5", "duration": "0:04", "playing": false}
       ]'></playlist-component>
 `
 

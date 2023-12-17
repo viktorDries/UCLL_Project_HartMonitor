@@ -8,6 +8,7 @@ template.innerHTML = /*html*/`
     <nav-comp></nav-comp>
     <my-counter></my-counter>
     <chart-element></chart-element>
+    <customAfspeellijst></customAfspeellijst>
 `
 
 class app extends HTMLElement {

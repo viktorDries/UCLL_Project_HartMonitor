@@ -10,7 +10,7 @@ template.innerHTML = /*html*/`
     <nav-comp></nav-comp>
     <my-counter></my-counter>
     <chart-element></chart-element>
-    <custom-afspeellijst></custom-afspeellijst>
+    <custom-afspeellijst><custom-afspeellijst>
 `
 
 class app extends HTMLElement {

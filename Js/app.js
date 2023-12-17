@@ -1,6 +1,7 @@
 import "./navbar.js"
 import "./muziek.js"
 import "./hartslag.js"
+import "./bpm.js"
 
 const template = document.createElement("template")
 template.innerHTML = /*html*/`
@@ -8,7 +9,8 @@ template.innerHTML = /*html*/`
     <nav-comp></nav-comp>
     <my-counter></my-counter>
     <chart-element></chart-element>
-`
+    <heart-rate-display data="[70, 75, 72, 68]"></heart-rate-display>
+    `
 
 class app extends HTMLElement {
     constructor() {

@@ -138,6 +138,7 @@ class ChartElement extends HTMLElement {
 
   connectedCallback() {
     this.render();
+    this.startContinuousUpdate();
   }
 
   render() {
@@ -237,6 +238,15 @@ class ChartElement extends HTMLElement {
 
   generateRandomValue(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  startContinuousUpdate() {
+    // Update the chart every second (adjust the interval as needed)
+    setInterval(() => {
+      this.chartData.shift(); // Remove the oldest data point
+      this.chartData.push(this.generateRandomValue(40, 120)); // Add a new random data point
+      this.drawChart(); // Redraw the chart with updated data
+    }, 1000);
   }
 }
 

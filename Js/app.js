@@ -18,7 +18,7 @@ template.innerHTML = /*html*/`
         {"title": "Song 4", "artist": "Artist 4", "duration": "0:01", "bpm": 90, "playing": false},
         {"title": "Song 5", "artist": "Artist 5", "duration": "0:01", "bpm": 110, "playing": false}
       ]'></playlist-component>
-      <bpm-display></bpm-display bpmValue="80">
+      <bpm-display bpmvalue="10"></bpm-display>
 `
 
 class app extends HTMLElement {

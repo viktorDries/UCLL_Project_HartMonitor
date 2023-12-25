@@ -1,5 +1,5 @@
-// Define the BPM Display web component
-class BPMDisplay extends HTMLElement {
+ // Define the BPM Display web component
+ class BPMDisplay extends HTMLElement {
     constructor() {
       super();
 
@@ -10,12 +10,19 @@ class BPMDisplay extends HTMLElement {
       this.bpm = 0;
       this.averageBPM = 0;
 
+      // Get initial BPM value from the attribute
+      const initialBPM = this.getAttribute('bpmvalue');
+      if (!isNaN(initialBPM)) {
+        this.bpm = parseFloat(initialBPM);
+      }
+
       // Render the component
       this.render();
 
       // Check for changes in attributes
       const observer = new MutationObserver(() => {
-        this.updateBPM(this.getAttribute('bpmvalue'));
+        const newBPM = this.getAttribute('bpmvalue');
+        this.updateBPM(newBPM);
       });
 
       observer.observe(this, { attributes: true, attributeFilter: ['bpmvalue'] });
@@ -31,7 +38,7 @@ class BPMDisplay extends HTMLElement {
     // Method to update BPM value
     updateBPM(newBPM) {
       if (!isNaN(newBPM)) {
-        this.bpm = newBPM;
+        this.bpm = parseFloat(newBPM);
         this.render();
       }
     }

@@ -26,6 +26,7 @@ template.innerHTML = /*html*/`
     <my-counter></my-counter>
       <bpm-display bpmvalue="10"></bpm-display>
       <footer-component></footer-component>
+    
 `
 
 class app extends HTMLElement {

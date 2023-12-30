@@ -10,7 +10,7 @@ class PlaylistComponent extends HTMLElement {
           :host {
             display: block;
             max-width: 400px;
-            margin: 20px auto;
+            margin: 20px;
             font-family: 'Arial', sans-serif;
           }
 

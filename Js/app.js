@@ -4,6 +4,7 @@ import "./hartslag.js"
 import "./afspeellijst.js"
 import "./bpm.js"
 import "./bpm-display.js"
+import "./footer.js"
 
 const template = document.createElement("template")
 template.innerHTML = /*html*/`
@@ -19,6 +20,7 @@ template.innerHTML = /*html*/`
         {"title": "Song 5", "artist": "Artist 5", "duration": "0:01", "bpm": 110, "playing": false}
       ]'></playlist-component>
       <bpm-display bpmvalue="10"></bpm-display>
+      <footer-component></footer-component>
 `
 
 class app extends HTMLElement {

@@ -1,7 +1,6 @@
-const template = document.createElement('template');
-    template.innerHTML = /*html*/`
+const template = document.createElement("template");
+template.innerHTML = /*html*/ `
       <style>
-        /* Styles for the heart rate table */
         table {
           border-collapse: collapse;
           width: 500px;
@@ -19,110 +18,105 @@ const template = document.createElement('template');
           color: #fff;
         }
 
-        /* Responsive styles */
         @media only screen and (max-width: 500px) {
           table {
             width: 100%;
           }
         }
       </style>
+
       <table>
         <thead>
           <tr>
-            <th>Index</th>
-            <th>BPM Value</th>
+            <th>Meeting</th>
+            <th>BPM Waarde</th>
           </tr>
         </thead>
         <tbody id="tableBody"></tbody>
       </table>
     `;
 
-    class HeartRateTable extends HTMLElement {
-      constructor() {
-        super();
+class HeartRateTable extends HTMLElement {
+  constructor() {
+    super();
 
-        // Create a shadow root
-        this.attachShadow({ mode: 'open' });
+    this.attachShadow({ mode: "open" });
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    //Aanmaken array voor afgelopen waardes in op te slaan
+    this.values = [];
 
-        // Initialize an array to store the values
-        this.values = [];
+    // Bind the updateValues method to the instance
+    this.updateValues = this.updateValues.bind(this);
 
-        // Append the template content to the shadow DOM
-        this.shadowRoot.appendChild(template.content.cloneNode(true));
+    // Start generating random BPM values every 2 seconds
+    setInterval(() => {
+      const newBPMValue = this.generateRandomBPM();
+      this.setAttribute("bpm-value", newBPMValue);
+    }, 1000);
+  }
 
-        // Bind the updateValues method to the instance
-        this.updateValues = this.updateValues.bind(this);
+  connectedCallback() {
+    // luistert voor veranderingen aan de attributen
+    const config = { attributes: true /*tract de attribuut value*/ , attributeOldValue: true /*tract de vorige attribuut waarde*/};
+    const observer = new MutationObserver(this.updateValues); //bij elke wijziging aan het attribuut zal de methode updateValues uitgevoerd worden
+    observer.observe(this, config); //observe doet het effectief kijken naar bovenstaande waarde
 
-        // Start generating random BPM values every 2 seconds
-        setInterval(() => {
-          const newBPMValue = this.generateRandomBPM();
-          this.setAttribute('bpm-value', newBPMValue);
-        }, 2000);
+    // Initialiseren updateValues
+    this.updateValues();
+  }
+
+  updateValues() {
+    // attribuut ophalen
+    const bpmValue = this.getAttribute("bpm-value");
+
+    // update wanneer value veranderd
+    if (bpmValue !== null && bpmValue !== this.values[0]) {
+      // nieuwe waarde toevoegen aan de array
+      this.values.unshift(bpmValue);
+
+      // Houd 10 waardes bij
+      if (this.values.length > 10) {
+        this.values.pop(); // verwijderd het laatste item indien er meer dan 10 waardes in de array zitten
       }
 
-      connectedCallback() {
-        // Listen for changes to the attributes
-        const config = { attributes: true, attributeOldValue: true };
-        const observer = new MutationObserver(this.updateValues);
-        observer.observe(this, config);
+      // table updaten
+      this.updateTableBody();
+    }
+  }
 
-        // Initial update
-        this.updateValues();
-      }
+  updateTableBody() {
+    // table body element verkrijgen
+    const tableBody = this.shadowRoot.getElementById("tableBody");
 
-      updateValues() {
-        // Get the bpm-value attribute
-        const bpmValue = this.getAttribute('bpm-value');
+    tableBody.innerHTML = "";
 
-        // Only update if the value is changed
-        if (bpmValue !== null && bpmValue !== this.values[0]) {
-          // Add the new value to the array
-          this.values.unshift(bpmValue);
-
-          // Keep only the last 10 values
-          if (this.values.length > 10) {
-            this.values.pop(); // Remove the last element
-          }
-
-          // Update the table body
-          this.updateTableBody();
-        }
-      }
-
-      updateTableBody() {
-        // Get the table body element
-        const tableBody = this.shadowRoot.getElementById('tableBody');
-
-        // Clear the existing content
-        tableBody.innerHTML = '';
-
-        // Populate the table with the values and indices
-        this.values.forEach((value, index) => {
-          const row = document.createElement('tr');
-          const indexText = this.getIndexText(index);
-          row.innerHTML = `
+    // index + waardes toevoegen aan de tabel
+    this.values.forEach((value, index) => {
+      const row = document.createElement("tr");
+      const indexText = this.getIndexText(index);
+      row.innerHTML = `
             <td>${indexText}</td>
             <td>${value}</td>
           `;
-          tableBody.appendChild(row);
-        });
-      }
+      tableBody.appendChild(row);
+    });
+  }
 
-      // Function to generate random BPM values
-      generateRandomBPM() {
-        // Generate a random BPM value between 60 and 100
-        return Math.floor(Math.random() * (100 - 60 + 1) + 60);
-      }
-
-      // Function to get the text for the index
-      getIndexText(index) {
-        if (index === 0) {
-          return 'Meest recente meting';
-        } else {
-          return `${index + 1}de laatste meting`;
-        }
-      }
+  // Tekst van de meeting
+  getIndexText(index) {
+    if (index === 0) {
+      return "Meest recente meting";
+    } else {
+      return `${index + 1}de laatste meting`;
     }
+  }
 
-    // Define the custom element
-    customElements.define('heart-rate-table', HeartRateTable);
+  // placeholder voor genereren inpu
+  generateRandomBPM() {
+    // random waarde tussen 60 & 100
+    return Math.floor(Math.random() * (100 - 60 + 1) + 60);
+  }
+}
+
+// Define the custom element
+customElements.define("heart-rate-table", HeartRateTable);

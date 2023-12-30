@@ -4,8 +4,8 @@ const template = document.createElement('template');
         /* Styles for the heart rate table */
         table {
           border-collapse: collapse;
-          width: 100%;
-          margin-top: 20px;
+          width: 500px;
+          margin: 20px;
         }
 
         th, td {
@@ -17,6 +17,13 @@ const template = document.createElement('template');
         th {
           background-color: #333;
           color: #fff;
+        }
+
+        /* Responsive styles */
+        @media only screen and (max-width: 500px) {
+          table {
+            width: 100%;
+          }
         }
       </style>
       <table>

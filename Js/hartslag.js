@@ -153,7 +153,7 @@ class ChartElement extends HTMLElement {
       <style>
         :host {
           display: block;
-          width: 300px;
+          width: 500px;
           height: 300px;
           position: relative;
           overflow: hidden;

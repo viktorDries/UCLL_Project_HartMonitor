@@ -24,7 +24,7 @@ template.innerHTML = /*html*/`
     ]'
       ></playlist-component>
     <my-counter></my-counter>
-      <bpm-display bpmvalue="10"></bpm-display>
+      <bpm-display></bpm-display>
       <footer-component></footer-component>
     
 `
@@ -39,3 +39,4 @@ class app extends HTMLElement {
 }
 
 customElements.define('app-comp', app)
+

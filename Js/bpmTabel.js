@@ -1,122 +1,118 @@
 const template = document.createElement("template");
 template.innerHTML = /*html*/ `
-      <style>
-        table {
-          border-collapse: collapse;
-          width: 500px;
-          margin: 20px;
-        }
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 40%;
+      margin: 20px;
+    }
 
-        th, td {
-          border: 1px solid #ddd;
-          padding: 8px;
-          text-align: center;
-        }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
 
-        th {
-          background-color: #333;
-          color: #fff;
-        }
+    th {
+      background-color: #333;
+      color: #fff;
+    }
+  </style>
 
-        @media only screen and (max-width: 500px) {
-          table {
-            width: 100%;
-          }
-        }
-      </style>
+  <table>
+    <thead>
+      <tr>
+        <th>Meeting</th>
+        <th>BPM Waarde</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+`;
 
-      <table>
-        <thead>
-          <tr>
-            <th>Meeting</th>
-            <th>BPM Waarde</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-      </table>
-    `;
-
-class HeartRateTable extends HTMLElement {
+class BPMTable extends HTMLElement {
   constructor() {
     super();
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-    //Aanmaken array voor afgelopen waardes in op te slaan
+
     this.values = [];
-
-    // Bind the updateValues method to the instance
-    this.updateValues = this.updateValues.bind(this);
-
-    // Start generating random BPM values every 2 seconds
-    setInterval(() => {
-      const newBPMValue = this.generateRandomBPM();
-      this.setAttribute("bpm-value", newBPMValue);
-    }, 1000);
+    this.latestTimestamp = 0; // Timestamp of the latest BPM value received
   }
 
   connectedCallback() {
-    // luistert voor veranderingen aan de attributen
-    const config = { attributes: true /*tract de attribuut value*/ , attributeOldValue: true /*tract de vorige attribuut waarde*/};
-    const observer = new MutationObserver(this.updateValues); //bij elke wijziging aan het attribuut zal de methode updateValues uitgevoerd worden
-    observer.observe(this, config); //observe doet het effectief kijken naar bovenstaande waarde
+    // WebSocket setup (replace 'ws://localhost:3000' with your backend server URL)
+    const socket = new WebSocket('ws://localhost:3000');
 
-    // Initialiseren updateValues
+    socket.addEventListener('message', (event) => {
+      const data = JSON.parse(event.data);
+      this.updateBPMWithDelay(data.bpmValues, data.timestamp); // Pass the array of BPM values and timestamp
+    });
+
+    // Start updating values every 2 seconds
     this.updateValues();
   }
 
   updateValues() {
-    // attribuut ophalen
-    const bpmValue = this.getAttribute("bpm-value");
+    // Schedule the next update after 2 seconds
+    setTimeout(() => {
+      // Call the next update
+      this.updateValues();
+    }, 2000);
+  }
 
-    // update wanneer value veranderd
-    if (bpmValue !== null && bpmValue !== this.values[0]) {
-      // nieuwe waarde toevoegen aan de array
-      this.values.unshift(bpmValue);
-
-      // Houd 10 waardes bij
-      if (this.values.length > 10) {
-        this.values.pop(); // verwijderd het laatste item indien er meer dan 10 waardes in de array zitten
-      }
-
-      // table updaten
-      this.updateTableBody();
+  updateBPMWithDelay(newBPMArray, timestamp) {
+    const currentTime = new Date().getTime();
+    if (currentTime - this.latestTimestamp >= 1000) {
+      // Process only if one second has passed since the last BPM value
+      this.latestTimestamp = currentTime;
+      this.updateBPM(newBPMArray);
     }
   }
 
+  updateBPM(newBPM) {
+    if (Array.isArray(newBPM) && newBPM.length > 0) {
+      // Get the newest BPM value from the array
+      const latestBPM = newBPM[newBPM.length - 1];
+
+      if (!isNaN(latestBPM)) {
+        this.values.unshift(latestBPM);
+      }
+    }
+
+    // Keep only 10 values
+    if (this.values.length > 10) {
+      this.values.pop();
+    }
+
+    // Update the table
+    this.updateTableBody();
+  }
+
   updateTableBody() {
-    // table body element verkrijgen
     const tableBody = this.shadowRoot.getElementById("tableBody");
 
     tableBody.innerHTML = "";
 
-    // index + waardes toevoegen aan de tabel
     this.values.forEach((value, index) => {
       const row = document.createElement("tr");
       const indexText = this.getIndexText(index);
       row.innerHTML = `
-            <td>${indexText}</td>
-            <td>${value}</td>
-          `;
+        <td>${indexText}</td>
+        <td>${value}</td>
+      `;
       tableBody.appendChild(row);
     });
   }
 
-  // Tekst van de meeting
   getIndexText(index) {
     if (index === 0) {
-      return "Meest recente meting";
+      return "Meest Recent";
     } else {
-      return `${index + 1}de laatste meting`;
+      return `${index + 1}de Laatste`;
     }
-  }
-
-  // placeholder voor genereren inpu
-  generateRandomBPM() {
-    // random waarde tussen 60 & 100
-    return Math.floor(Math.random() * (100 - 60 + 1) + 60);
   }
 }
 
-// Define the custom element
-customElements.define("heart-rate-table", HeartRateTable);
+customElements.define("bpm-table", BPMTable);

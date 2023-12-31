@@ -13,7 +13,7 @@ template.innerHTML = /*html*/`
 
     <nav-comp></nav-comp>
     <chart-element></chart-element>
-    <heart-rate-table bpm-value = "24"></heart-rate-table>
+    <bpm-table></bpm-table>
     <playlist-component songs=
     '[
         {"title": "Song 1", "artist": "Artist 1", "duration": "0:01", "bpm": 120, "playing": false},
@@ -23,7 +23,6 @@ template.innerHTML = /*html*/`
         {"title": "Song 5", "artist": "Artist 5", "duration": "0:01", "bpm": 110, "playing": false}
     ]'
       ></playlist-component>
-    <my-counter></my-counter>
       <bpm-display></bpm-display>
       <footer-component></footer-component>
     

@@ -6,8 +6,8 @@ template.innerHTML = `
       font-family: 'Arial', sans-serif;
       text-align: center;
       padding: 20px;
-      border: 5px solid #333; /* Border color */
-      border-radius: 12px; /* Increased border-radius for a smoother look */
+      border: 4px solid #333; /* Border color */
+      border-radius: 20px; /* Increased border-radius for a smoother look */
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Soft box shadow for depth */
       transition: box-shadow 0.3s ease; /* Smooth transition on hover or state changes */
       max-width: 300px;

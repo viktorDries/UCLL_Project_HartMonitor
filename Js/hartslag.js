@@ -4,7 +4,7 @@ class ChartElement extends HTMLElement {
   constructor() {
     super(); // Invoke the constructor of the parent class (HTMLElement)
     this.attachShadow({ mode: 'open' }); // Create a shadow DOM for encapsulation
-    this.chartData = Array.from({ length: 50 }, () => 0); // Initialize chart data with 50 zeroes
+    this.chartData = Array.from({ length: 100 }, () => 0); // Initialize chart data with 100 zeroes
   }
 
   // ConnectedCallback is called when the element is added to the DOM
@@ -19,12 +19,7 @@ class ChartElement extends HTMLElement {
 
   // Render method sets the inner HTML of the shadow DOM
   render() {
-    this.shadowRoot.innerHTML = this.getTemplate();
-  }
-
-  // GetTemplate method returns an HTML template as a string
-  getTemplate() {
-    return /*html*/`
+    this.shadowRoot.innerHTML = /*html*/`
     <style>
       :host {
         display: block;
@@ -53,7 +48,7 @@ class ChartElement extends HTMLElement {
     this.chart = new Chart(this.ctx, {
       type: 'line',
       data: {
-        labels: Array.from({ length: 50 }, (_, i) => i + 1),
+        labels: Array.from({ length: 100 }, (_, i) => i + 1), // wrodt gebruikt om de labems van de x-as de generen 
         datasets: [{
           label: 'Laatste 50 waarden',
           data: this.chartData,
@@ -74,6 +69,8 @@ class ChartElement extends HTMLElement {
           x: {
             type: 'linear',
             position: 'bottom',
+            min: 0,
+            max: 100,
           },
           y: {
             type: 'linear',
@@ -101,8 +98,8 @@ customElements.define('chart-element', ChartElement);
 document.addEventListener('DOMContentLoaded', () => {
   const socket = new WebSocket('ws://localhost:3000'); // Create a WebSocket connection
 
-  //const chartElement = document.createElement('chart-element'); // Create an instance of ChartElement
-  //document.body.appendChild(chartElement); // Append the custom element to the body
+  const chartElement = document.createElement('chart-element'); // Create an instance of ChartElement
+  document.body.appendChild(chartElement); // Append the custom element to the body
 
   // WebSocket message event listener
   socket.addEventListener('message', (event) => {
@@ -111,8 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Delay the chart update by 1 second
     setTimeout(() => {
-      const last20Values = data.bpmValues.slice(-50); // Get the last 50 values
-      chartElement.setChartData(last20Values); // Update the chart data
+      const last100Values = data.bpmValues.slice(-100); // Get the last 100 values
+      chartElement.setChartData(last100Values); // Update the chart data
     }, 1000);
   });
 });

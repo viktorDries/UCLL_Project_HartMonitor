@@ -54,24 +54,13 @@ class BPMTable extends HTMLElement {
 
     socket.addEventListener('message', (event) => {
       const data = JSON.parse(event.data);
-      this.updateBPMWithDelay(data.bpmValues, data.timestamp); // Doorgeven van de array met BPM-waarden en timestamp
+      this.updateBPMWithDelay(data.bpmValues); // Doorgeven van de array met BPM-waarden en timestamp
     });
 
-    // Start het bijwerken van waarden elke 2 seconden
-    this.updateValues();
-  }
-
-  // Methode om waarden elke 2 seconden bij te werken
-  updateValues() {
-    // Plan de volgende update na 2 seconden
-    setTimeout(() => {
-      // Roep de volgende update aan
-      this.updateValues();
-    }, 2000);
   }
 
   // Methode om BPM-waarden met een vertraging te bij te werken
-  updateBPMWithDelay(newBPMArray, timestamp) {
+  updateBPMWithDelay(newBPMArray) {
     const currentTime = new Date().getTime();
     if (currentTime - this.latestTimestamp >= 1000) {
       // Verwerk alleen als er één seconde is verstreken sinds de laatste BPM-waarde
@@ -100,22 +89,23 @@ class BPMTable extends HTMLElement {
     this.updateTableBody();
   }
 
-  // Methode om de tbody van de tabel bij te werken
-  updateTableBody() {
-    const tableBody = this.shadowRoot.getElementById("tableBody");
+ // Methode om de tbody van de tabel bij te werken
+updateTableBody() {
+  const tableBody = this.shadowRoot.getElementById("tableBody");
 
-    tableBody.innerHTML = "";
+  tableBody.innerHTML = "";
 
-    this.values.forEach((value, index) => {
-      const row = document.createElement("tr");
-      const indexText = this.getIndexText(index);
-      row.innerHTML = `
-        <td>${indexText}</td>
-        <td>${value}</td>
-      `;
-      tableBody.appendChild(row);
-    });
-  }
+  this.values.forEach((value, index) => {
+    const row = document.createElement("tr");
+    const indexText = this.getIndexText(index);
+    const roundedValue = Math.round(value); // afronding getal tot volledig getal
+    row.innerHTML = `
+      <td>${indexText}</td>
+      <td>${roundedValue}</td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
 
   // Hulpmethode om tekst te genereren op basis van de index
   getIndexText(index) {
